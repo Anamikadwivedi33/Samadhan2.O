@@ -1,0 +1,16 @@
+
+//Day-1
+
+// Student object
+let student = {
+    name: "Anamika",
+    age: 21,
+    course: "B.Sc. Computer Science",
+    grade: "A"
+};
+
+// Print details
+console.log("Student Name: " + student.name);
+console.log("Age: " + student.age);
+console.log("Course: " + student.course);
+console.log("Grade: " + student.grade);
