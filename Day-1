@@ -1,7 +1,8 @@
 
 //Day-1
 
-// Student object
+// Print student details from an object
+
 let student = {
     name: "Anamika",
     age: 21,
