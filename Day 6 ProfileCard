@@ -1,0 +1,41 @@
+import React from "react";
+
+export default function App() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-6">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 text-center">
+        
+        {/* Profile Picture */}
+        <div className="flex justify-center">
+          <img
+            src="https://via.placeholder.com/150"
+            alt="Profile"
+            className="w-32 h-32 rounded-full border-4 border-indigo-500 shadow-md"
+          />
+        </div>
+
+        {/* Name */}
+        <h1 className="mt-4 text-2xl font-bold text-gray-800">Sadhvi Pandey</h1>
+        
+        {/* Role */}
+        <p className="text-gray-500 text-sm">Full Stack Developer | Python Enthusiast</p>
+
+        {/* Description */}
+        <p className="mt-4 text-gray-600 text-base leading-relaxed">
+          Passionate about building user-friendly applications with modern 
+          technologies. Skilled in Python, Flask, React, and database systems.
+        </p>
+
+        {/* Buttons */}
+        <div className="mt-6 flex justify-center space-x-4">
+          <button className="px-5 py-2 rounded-full bg-indigo-500 text-white font-medium shadow hover:bg-indigo-600 transition">
+            Contact
+          </button>
+          <button className="px-5 py-2 rounded-full bg-gray-200 text-gray-700 font-medium shadow hover:bg-gray-300 transition">
+            Portfolio
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
