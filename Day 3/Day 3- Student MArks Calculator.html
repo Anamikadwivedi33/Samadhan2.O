@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Marks Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f7f7f7;
+    }
+    h2 {
+      color: #333;
+    }
+    .marks-container {
+      margin-bottom: 15px;
+    }
+    .mark-field {
+      display: block;
+      margin: 5px 0;
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+    }
+    button {
+      margin: 5px 5px 10px 0;
+      padding: 8px 12px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .result {
+      margin-top: 15px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Student Marks Calculator</h2>
+  
+  <div class="marks-container" id="marksContainer">
+    <input type="number" class="mark-field" placeholder="Enter marks for subject 1">
+    <input type="number" class="mark-field" placeholder="Enter marks for subject 2">
+    <input type="number" class="mark-field" placeholder="Enter marks for subject 3">
+  </div>
+  
+  <button onclick="addField()">+ Add Subject</button>
+  <button onclick="calculateMarks()">Calculate</button>
+  
+  <div class="result" id="result"></div>
+
+  <script>
+    function addField() {
+      const container = document.getElementById("marksContainer");
+      const count = container.getElementsByClassName("mark-field").length + 1;
+      const newField = document.createElement("input");
+      newField.type = "number";
+      newField.className = "mark-field";
+      newField.placeholder = `Enter marks for subject ${count}`;
+      container.appendChild(newField);
+    }
+
+    function calculateGrade(avg) {
+      if (avg >= 90) return "A+";
+      else if (avg >= 80) return "A";
+      else if (avg >= 70) return "B";
+      else if (avg >= 60) return "C";
+      else if (avg >= 50) return "D";
+      else return "F";
+    }
+
+    function calculateMarks() {
+      const inputs = document.getElementsByClassName("mark-field");
+      let marksArray = [];
+      
+      for (let input of inputs) {
+        const val = parseFloat(input.value);
+        if (!isNaN(val)) marksArray.push(val);
+      }
+
+      if (marksArray.length === 0) {
+        document.getElementById("result").innerHTML = "<span style='color:red;'>Please enter valid marks.</span>";
+        return;
+      }
+
+      const total = marksArray.reduce((acc, val) => acc + val, 0);
+      const avg = total / marksArray.length;
+      const grade = calculateGrade(avg);
+
+      document.getElementById("result").innerHTML = `
+        Total Marks: <b>${total.toFixed(2)}</b><br>
+        Average Marks: <b>${avg.toFixed(2)}</b><br>
+        Grade: <b>${grade}</b>
+      `;
+    }
+  </script>
+</body>
+</html>
