@@ -1,0 +1,62 @@
+import React, { useState } from "react";
+
+function App() {
+  // State for the counter
+  const [count, setCount] = useState(0);
+
+  // Handlers for increment and decrement
+  const increment = () => setCount(count + 1);
+  const decrement = () => setCount(count - 1);
+
+  // Inline styles (so no separate CSS file needed)
+  const styles = {
+    app: {
+      textAlign: "center",
+      fontFamily: "Arial, sans-serif",
+      padding: "20px",
+    },
+    counterContainer: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "10px",
+      margin: "20px 0",
+    },
+    button: {
+      padding: "10px 20px",
+      fontSize: "18px",
+      cursor: "pointer",
+    },
+    count: {
+      fontSize: "24px",
+      fontWeight: "bold",
+    },
+    preview: {
+      marginTop: "20px",
+      fontSize: "20px",
+    },
+  };
+
+  return (
+    <div style={styles.app}>
+      <h1>Counter + Live Text Preview</h1>
+
+      <div style={styles.counterContainer}>
+        <button style={styles.button} onClick={decrement}>
+          -
+        </button>
+        <span style={styles.count}>{count}</span>
+        <button style={styles.button} onClick={increment}>
+          +
+        </button>
+      </div>
+
+      <div style={styles.preview}>
+        <h2>Live Preview:</h2>
+        <p>The current count is: {count}</p>
+      </div>
+    </div>
+  );
+}
+
+export default App;
