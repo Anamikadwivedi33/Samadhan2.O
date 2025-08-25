@@ -1,4 +1,3 @@
-//Counter+live preview 
 import React, { useState } from "react";
 
 function App() {
