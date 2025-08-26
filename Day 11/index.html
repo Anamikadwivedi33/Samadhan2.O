@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student CRUD</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 6px 12px;
+            margin: 2px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background: #0056b3; }
+        .delete-btn { background: #dc3545; }
+        .delete-btn:hover { background: #a71d2a; }
+        .save-btn { background: #28a745; }
+        .save-btn:hover { background: #1e7e34; }
+        input {
+            margin: 5px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Student CRUD API</h1>
+    <div class="container">
+        <h3>Add Student</h3>
+        <input type="text" id="name" placeholder="Name">
+        <input type="number" id="age" placeholder="Age">
+        <button onclick="addStudent()">Add</button>
+
+        <h3>Student List</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="studentTable"></tbody>
+        </table>
+    </div>
+
+    <script>
+        async function fetchStudents() {
+            const res = await fetch('/students');
+            const students = await res.json();
+            const table = document.getElementById('studentTable');
+            table.innerHTML = '';
+
+            students.forEach(s => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${s.id}</td>
+                    <td><span class="name">${s.name}</span></td>
+                    <td><span class="age">${s.age}</span></td>
+                    <td>
+                        <button onclick="enableEdit(${s.id}, this)">Edit</button>
+                        <button class="delete-btn" onclick="deleteStudent(${s.id})">Delete</button>
+                    </td>
+                `;
+                table.appendChild(row);
+            });
+        }
+
+        async function addStudent() {
+            const name = document.getElementById('name').value.trim();
+            const age = document.getElementById('age').value.trim();
+            if(!name || !age) return alert('Please enter name and age');
+            await fetch('/students', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, age })
+            });
+            document.getElementById('name').value = '';
+            document.getElementById('age').value = '';
+            fetchStudents();
+        }
+
+        function enableEdit(id, btn) {
+            const row = btn.closest('tr');
+            const nameCell = row.querySelector('.name');
+            const ageCell = row.querySelector('.age');
+
+            const currentName = nameCell.textContent;
+            const currentAge = ageCell.textContent;
+
+            nameCell.innerHTML = `<input type="text" value="${currentName}" id="editName${id}">`;
+            ageCell.innerHTML = `<input type="number" value="${currentAge}" id="editAge${id}">`;
+            btn.textContent = 'Save';
+            btn.classList.add('save-btn');
+            btn.setAttribute('onclick', `saveEdit(${id}, this)`);
+        }
+
+        async function saveEdit(id, btn) {
+            const newName = document.getElementById(`editName${id}`).value.trim();
+            const newAge = document.getElementById(`editAge${id}`).value.trim();
+            await fetch(`/students/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: newName, age: newAge })
+            });
+            fetchStudents();
+        }
+
+        async function deleteStudent(id) {
+            await fetch(`/students/${id}`, { method: 'DELETE' });
+            fetchStudents();
+        }
+
+        fetchStudents(); // load students on page load
+    </script>
+</body>
+</html>
