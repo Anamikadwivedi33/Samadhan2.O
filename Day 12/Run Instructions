@@ -1,0 +1,8 @@
+# Backend
+cd backend
+npm install
+npm start   # backend runs at http://localhost:5000
+
+# Frontend
+cd frontend
+open index.html  # (ya browser me double-click se khol lo)
