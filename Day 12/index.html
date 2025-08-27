@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do App</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const API_URL = "http://localhost:5000";
+
+    function App() {
+      const [tasks, setTasks] = React.useState([]);
+      const [text, setText] = React.useState("");
+
+      // Fetch tasks
+      const fetchTasks = async () => {
+        const res = await fetch(`${API_URL}/tasks`);
+        const data = await res.json();
+        setTasks(data);
+      };
+
+      React.useEffect(() => {
+        fetchTasks();
+      }, []);
+
+      // Add task
+      const handleAdd = async () => {
+        if (text.trim() === "") return;
+        const res = await fetch(`${API_URL}/tasks`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text })
+        });
+        const newTask = await res.json();
+        setTasks([...tasks, newTask]);
+        setText("");
+      };
+
+      // Delete task
+      const handleDelete = async (id) => {
+        await fetch(`${API_URL}/tasks/${id}`, { method: "DELETE" });
+        setTasks(tasks.filter((t) => t.id !== id));
+      };
+
+      return (
+        <div style={{ textAlign: "center", marginTop: "40px" }}>
+          <h2>To-Do App</h2>
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="Enter task"
+          />
+          <button onClick={handleAdd}>Add</button>
+          <ul style={{ listStyle: "none", padding: 0 }}>
+            {tasks.map((t) => (
+              <li key={t.id} style={{ margin: "8px" }}>
+                {t.text} <button onClick={() => handleDelete(t.id)}>❌</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
