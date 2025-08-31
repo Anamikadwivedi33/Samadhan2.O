@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  gap: 15px;
+  padding: 10px;
+  background: #333;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 8px;
+  width: 200px;
+  text-align: center;
+}
+
+.products-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
